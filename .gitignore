@@ -1,0 +1,6 @@
+data/raw/*
+data/processed/*
+data/ontologies/*
+!data/**/.gitkeep
+models/*.pkl
+!models/**/.gitkeep
