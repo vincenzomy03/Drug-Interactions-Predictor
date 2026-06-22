@@ -17,16 +17,19 @@ Iniettando le feature semantiche estratte dall'ontologia (classi chimiche e ruol
 ```text
 📦 Drug-Interactions-Predictor
  ┣ 📂 data
- ┃ ┣ 📂 ontologies      # Contiene chebi.owl (File ignorato da git per dimensioni)
- ┃ ┣ 📂 processed       # Dataset puliti e feature semantiche estratte
- ┃ ┗ 📂 raw             # Dati grezzi originali
- ┣ 📂 models            # Modelli addestrati e serializzati (.pkl)
+ ┃ ┣ 📂 ontologies          # Contiene chebi.owl (File ignorato da git per dimensioni)
+ ┃ ┣ 📂 processed           # Dataset puliti e feature semantiche estratte
+ ┃ ┗ 📂 raw                 # Dati grezzi originali (inclusi i sotto-dataset ATC)
+ ┣ 📂 models                # Modelli addestrati e serializzati (.pkl)
  ┣ 📂 src
- ┃ ┣ 📜 extract_features.py # Modulo di mapping testuale e interrogazione ChEBI
- ┃ ┣ 📜 build_dataset.py    # Modulo di join relazionale tra clinica e KB
- ┃ ┣ 📜 train_models.py     # Benchmark sperimentale (Cross-Validation)
- ┃ ┣ 📜 save_final_model.py # Serializzazione del modello ottimizzato
- ┃ ┗ 📜 app.py              # Interfaccia UI Streamlit
+ ┃ ┣ 📜 extract_features.py     # Modulo di mapping testuale e interrogazione ChEBI
+ ┃ ┣ 📜 build_dataset.py        # Modulo di join relazionale tra clinica e KB
+ ┃ ┣ 📜 train_models.py         # Benchmark sperimentale (Cross-Validation)
+ ┃ ┣ 📜 save_final_model.py     # Serializzazione del modello ottimizzato
+ ┃ ┣ 📜 evaluate_atc_subsets.py # Benchmark sperimentale specifico sui sotto-dataset ATC
+ ┃ ┣ 📜 ontology_mapper.py      # Utility di test caricamento ontologia e query
+ ┃ ┣ 📜 prolog_interpreter.py   # Ragionatore simbolico (Prolog Interpreter) custom
+ ┃ ┗ 📜 app.py                  # Interfaccia UI Streamlit (Dashboard)
  ┣ 📜 .gitignore
  ┣ 📜 requirements.txt
  ┗ 📜 README.md
@@ -86,6 +89,10 @@ Valutazione Sperimentale (Benchmark): Esegue una k-Fold Cross-Validation confron
 ```Bash
 python src/train_models.py
 ```
+Valutazione Sperimentale su Sotto-dataset ATC: Valuta le performance predittive del modello su singoli sotto-dataset divisi per categoria ATC.
+```Bash
+python src/evaluate_atc_subsets.py
+```
 Salvataggio Artefatti: Genera i file .pkl per l'interfaccia di inferenza.
 ```Bash
 python src/save_final_model.py
@@ -101,11 +108,12 @@ Il browser si aprirà automaticamente all'indirizzo http://localhost:8501.
 
 
 ## 🔬 Valutazione e Metriche
-L'introduzione della Background Knowledge ha generato un incremento significativo delle metriche predittive. Come verificabile dallo script di training, il sistema è passato da:
+L'introduzione della Background Knowledge (KB) ha generato un incremento significativo delle performance predittive. Come verificabile dallo script di training e riportato nella tesi (Tabella 7.1):
 
-    Baseline Lineare: ~58% Accuracy
+*   **Baseline (Logistic Regression):** Accuracy Media del **56.17%** (&plusmn; 5.29%) e Macro F1-Score Medio del **46.99%** (&plusmn; 3.71%).
+*   **Modello Semanticamente Arricchito (Tuned Random Forest):** Accuracy Media del **77.02%** (&plusmn; 3.50%) e Macro F1-Score Medio del **65.18%** (&plusmn; 2.90%).
 
-    Modello Semanticamente Arricchito: ~76% Accuracy
+L'arricchimento semantico ha comportato un incremento prestazionale netto rispetto alla baseline lineare, aumentando l'Accuracy di circa il **+20.85%** e il Macro F1-Score del **+18.19%**.
 
 ## ⚠️ Limiti Clinici (Disclaimer)
 Questo sistema è un prototipo accademico. Le predizioni non tengono conto di variabili cliniche fondamentali quali il dosaggio (farmacocinetica), le co-morbilità del paziente, l'età e la funzionalità epatica/renale. Non deve in alcun caso essere utilizzato come supporto decisionale per terapie su pazienti reali al di fuori di un ambiente di simulazione biomedica.
