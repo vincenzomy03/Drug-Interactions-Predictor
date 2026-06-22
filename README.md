@@ -62,7 +62,7 @@ L'ontologia ChEBI pesa oltre 800MB e non è tracciata nel repository. È necessa
 
 Via terminale (Windows):
  ```bash
-Invoke-WebRequest -Uri "[https://ftp.ebi.ac.uk/pub/databases/chebi/ontology/chebi.owl](https://ftp.ebi.ac.uk/pub/databases/chebi/ontology/chebi.owl)" -OutFile "data\ontologies\chebi.owl"
+Invoke-WebRequest -Uri "https://ftp.ebi.ac.uk/pub/databases/chebi/ontology/chebi.owl" -OutFile "data\ontologies\chebi.owl"
 ```
 Manualmente: 
 ```text
