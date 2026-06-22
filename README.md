@@ -37,7 +37,7 @@ Iniettando le feature semantiche estratte dall'ontologia (classi chimiche e ruol
 
 Clona il repository e posizionati nella cartella di progetto:
 ```Bash
-git clone <URL_DEL_TUO_REPO>
+git clone <URL_DEL_REPO>
 cd Drug-Interactions-Predictor
 ```
 
